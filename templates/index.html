@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Jauniešu budžets</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+<style>
+.delete{color:white;background:#c0392b;padding:5px 10px;border-radius:5px;text-decoration:none}
+</style>
+</head>
+<body>
+
+<img src="/static/logo.png" width="150">
+
+<h2>Kopējais budžets: {{total_budget}} € | Atlikums: {{total_remaining}} €</h2>
+
+<h3>Pievienot izdevumu</h3>
+<form method="POST" action="/add_expense">
+<select name="pasakums">
+<option value="">Izvēlies pasākumu</option>
+{% for p in pasakumi %}
+<option value="{{p.id}}">{{p.nosaukums}}</option>
+{% endfor %}
+</select>
+<input name="apraksts" placeholder="Apraksts" required>
+<input name="summa" placeholder="Summa" required>
+<button>Pievienot</button>
+</form>
+
+<hr>
+
+{% for p in pasakumi %}
+<h3 onclick="this.nextElementSibling.style.display =
+(this.nextElementSibling.style.display=='none'?'block':'none')">
+{{p.nosaukums}} (Atlikums: {{p.remaining}} €)
+</h3>
+
+<div style="display:none">
+<a href="/pdf/{{p.id}}">Saglabāt PDF</a>
+<ul>
+{% for i in p.izdevumi %}
+<li>{{i[2]}} – {{i[3]}} € <a class="delete" href="/delete_expense/{{i[0]}}">Dzēst</a></li>
+{% endfor %}
+</ul>
+<a class="delete" href="/delete_event/{{p.id}}">Dzēst pasākumu</a>
+</div>
+{% endfor %}
+
+</body>
+</html>
