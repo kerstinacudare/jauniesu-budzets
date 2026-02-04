@@ -63,6 +63,40 @@ def index():
                            total_spent=total_spent,
                            total_remaining=total_budget-total_spent)
 
+# PIEVIENOT JAUNU PASĀKUMU
+@app.route("/add_event", methods=["POST"])
+def add_event():
+    conn = connect()
+    conn.execute("INSERT INTO pasakumi (nosaukums, budzets) VALUES (?, ?)",
+                 (request.form["nosaukums"], request.form["budzets"]))
+    conn.commit()
+    conn.close()
+    return redirect("/")
+
+# PALIELINĀT BUDŽETU
+@app.route("/increase_budget", methods=["POST"])
+def increase_budget():
+    conn = connect()
+    conn.execute("UPDATE pasakumi SET budzets = budzets + ? WHERE id=?",
+                 (request.form["summa"], request.form["pasakums"]))
+    conn.commit()
+    conn.close()
+    return redirect("/")
+
+# PĀRDALĪT NAUDU
+@app.route("/transfer", methods=["POST"])
+def transfer():
+    from_id = request.form["no"]
+    to_id = request.form["uz"]
+    summa = float(request.form["summa"])
+
+    conn = connect()
+    conn.execute("UPDATE pasakumi SET budzets = budzets - ? WHERE id=?", (summa, from_id))
+    conn.execute("UPDATE pasakumi SET budzets = budzets + ? WHERE id=?", (summa, to_id))
+    conn.commit()
+    conn.close()
+    return redirect("/")
+
 @app.route("/add_expense", methods=["POST"])
 def add_expense():
     if request.form["pasakums"] == "":
