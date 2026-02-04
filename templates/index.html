@@ -5,6 +5,10 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
 <style>
 .delete{color:white;background:#c0392b;padding:5px 10px;border-radius:5px;text-decoration:none}
+table{border-collapse:collapse;width:100%}
+th,td{border:1px solid #ddd;padding:10px;text-align:center}
+th{background:#f2f2f2}
+tr:hover{background:#f9f9f9}
 </style>
 </head>
 <body>
@@ -28,22 +32,46 @@
 
 <hr>
 
-{% for p in pasakumi %}
-<h3 onclick="this.nextElementSibling.style.display =
-(this.nextElementSibling.style.display=='none'?'block':'none')">
-{{p.nosaukums}} (Atlikums: {{p.remaining}} €)
-</h3>
+<h2>Pasākumu pārskats</h2>
 
-<div style="display:none">
-<a href="/pdf/{{p.id}}">Saglabāt PDF</a>
+<table>
+<tr>
+    <th>Pasākums</th>
+    <th>Budžets</th>
+    <th>Iztērēts</th>
+    <th>Atlikums</th>
+    <th>Darbības</th>
+</tr>
+
+{% for p in pasakumi %}
+<tr>
+    <td onclick="document.getElementById('r{{p.id}}').style.display =
+    (document.getElementById('r{{p.id}}').style.display=='none'?'table-row':'none')"
+    style="cursor:pointer;font-weight:bold;">
+        {{p.nosaukums}}
+    </td>
+    <td>{{p.budzets}} €</td>
+    <td>{{p.spent}} €</td>
+    <td>{{p.remaining}} €</td>
+    <td>
+        <a class="delete" href="/delete_event/{{p.id}}">Dzēst</a> |
+        <a href="/pdf/{{p.id}}">PDF</a>
+    </td>
+</tr>
+
+<tr id="r{{p.id}}" style="display:none;">
+<td colspan="5" style="text-align:left;">
+<b>Izdevumi:</b>
 <ul>
 {% for i in p.izdevumi %}
-<li>{{i[2]}} – {{i[3]}} € <a class="delete" href="/delete_expense/{{i[0]}}">Dzēst</a></li>
+<li>{{i[2]}} – {{i[3]}} € 
+<a class="delete" href="/delete_expense/{{i[0]}}">Dzēst</a></li>
 {% endfor %}
 </ul>
-<a class="delete" href="/delete_event/{{p.id}}">Dzēst pasākumu</a>
-</div>
+</td>
+</tr>
 {% endfor %}
+</table>
 
 </body>
 </html>
