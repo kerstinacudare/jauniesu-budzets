@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Jauniešu budžets</title>
+<title>Jauniešu budžeta sistēma</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
 <style>
 .delete{color:white;background:#c0392b;padding:5px 10px;border-radius:5px;text-decoration:none}
@@ -9,6 +9,7 @@ table{border-collapse:collapse;width:100%}
 th,td{border:1px solid #ddd;padding:10px;text-align:center}
 th{background:#f2f2f2}
 tr:hover{background:#f9f9f9}
+.section{margin-top:30px}
 </style>
 </head>
 <body>
@@ -17,6 +18,7 @@ tr:hover{background:#f9f9f9}
 
 <h2>Kopējais budžets: {{total_budget}} € | Atlikums: {{total_remaining}} €</h2>
 
+<div class="section">
 <h3>Pievienot izdevumu</h3>
 <form method="POST" action="/add_expense">
 <select name="pasakums">
@@ -29,6 +31,41 @@ tr:hover{background:#f9f9f9}
 <input name="summa" placeholder="Summa" required>
 <button>Pievienot</button>
 </form>
+</div>
+
+<div class="section">
+<h3>Pievienot pasākumu</h3>
+<form method="POST" action="/add_event">
+<input name="nosaukums" placeholder="Pasākuma nosaukums" required>
+<input name="budzets" placeholder="Budžets" required>
+<button>Pievienot</button>
+</form>
+</div>
+
+<div class="section">
+<h3>Palielināt budžetu</h3>
+<form method="POST" action="/increase_budget">
+<select name="pasakums">
+{% for p in pasakumi %}
+<option value="{{p.id}}">{{p.nosaukums}}</option>
+{% endfor %}
+</select>
+<input name="summa" placeholder="Summa" required>
+<button>Pievienot finansējumu</button>
+</form>
+</div>
+
+<div class="section">
+<h3>Pārdalīt budžetu</h3>
+<form method="POST" action="/transfer">
+No:
+<select name="no">{% for p in pasakumi %}<option value="{{p.id}}">{{p.nosaukums}}</option>{% endfor %}</select>
+Uz:
+<select name="uz">{% for p in pasakumi %}<option value="{{p.id}}">{{p.nosaukums}}</option>{% endfor %}</select>
+<input name="summa" placeholder="Summa" required>
+<button>Pārdalīt</button>
+</form>
+</div>
 
 <hr>
 
