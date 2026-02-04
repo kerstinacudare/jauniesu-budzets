@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
 <style>
 .delete{color:white;background:#c0392b;padding:5px 10px;border-radius:5px;text-decoration:none}
+.mainbtn{background:#629f90;color:white;padding:8px 14px;border:none;border-radius:6px;cursor:pointer}
 table{border-collapse:collapse;width:100%}
 th,td{border:1px solid #ddd;padding:10px;text-align:center}
 th{background:#f2f2f2}
@@ -21,7 +22,7 @@ tr:hover{background:#f9f9f9}
 <div class="section">
 <h3>Pievienot izdevumu</h3>
 <form method="POST" action="/add_expense">
-<select name="pasakums">
+<select name="pasakums" required>
 <option value="">Izvēlies pasākumu</option>
 {% for p in pasakumi %}
 <option value="{{p.id}}">{{p.nosaukums}}</option>
@@ -29,7 +30,7 @@ tr:hover{background:#f9f9f9}
 </select>
 <input name="apraksts" placeholder="Apraksts" required>
 <input name="summa" placeholder="Summa" required>
-<button>Pievienot</button>
+<button class="mainbtn">Pievienot</button>
 </form>
 </div>
 
@@ -38,20 +39,21 @@ tr:hover{background:#f9f9f9}
 <form method="POST" action="/add_event">
 <input name="nosaukums" placeholder="Pasākuma nosaukums" required>
 <input name="budzets" placeholder="Budžets" required>
-<button>Pievienot</button>
+<button class="mainbtn">Pievienot</button>
 </form>
 </div>
 
 <div class="section">
 <h3>Palielināt budžetu</h3>
 <form method="POST" action="/increase_budget">
-<select name="pasakums">
+<select name="pasakums" required>
+<option value="">Izvēlies pasākumu</option>
 {% for p in pasakumi %}
 <option value="{{p.id}}">{{p.nosaukums}}</option>
 {% endfor %}
 </select>
 <input name="summa" placeholder="Summa" required>
-<button>Pievienot finansējumu</button>
+<button class="mainbtn">Pievienot finansējumu</button>
 </form>
 </div>
 
@@ -59,11 +61,17 @@ tr:hover{background:#f9f9f9}
 <h3>Pārdalīt budžetu</h3>
 <form method="POST" action="/transfer">
 No:
-<select name="no">{% for p in pasakumi %}<option value="{{p.id}}">{{p.nosaukums}}</option>{% endfor %}</select>
+<select name="no" required>
+<option value="">Izvēlies pasākumu</option>
+{% for p in pasakumi %}<option value="{{p.id}}">{{p.nosaukums}}</option>{% endfor %}
+</select>
 Uz:
-<select name="uz">{% for p in pasakumi %}<option value="{{p.id}}">{{p.nosaukums}}</option>{% endfor %}</select>
+<select name="uz" required>
+<option value="">Izvēlies pasākumu</option>
+{% for p in pasakumi %}<option value="{{p.id}}">{{p.nosaukums}}</option>{% endfor %}
+</select>
 <input name="summa" placeholder="Summa" required>
-<button>Pārdalīt</button>
+<button class="mainbtn">Pārdalīt</button>
 </form>
 </div>
 
